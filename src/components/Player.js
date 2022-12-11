@@ -25,14 +25,6 @@ function Player (props) {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-        } else {
-            handlePlayTrack();
-        }
-    }, [props.trackUrl])
-
     function handlePlayTrack() {
         setTrackImage(props.trackImage);
         setArtistName(props.artistName);
@@ -46,6 +38,14 @@ function Player (props) {
         
         setIsPlaying(true);
     }
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            handlePlayTrack();
+        }
+    }, [props.trackUrl])
 
     function handlePlayPauseToggle() {
         if (trackUrl) {
