@@ -6,12 +6,13 @@ function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
-    const [nameForUrl, setNameForUrl] = useState("");
     const [location, setLocation] = useState("");
     const [description, setDescription] = useState("");
     const [imageToUpload, setImageToUpload] = useState(undefined);
     const [uploadImageLabel, setUploadImageLabel] = useState("Choose profile picture");
     const [errorMessage, setErrorMessage] = useState(undefined);
+
+    const API_URL = process.env.REACT_APP_API_URL;
 
     const navigate = useNavigate();
 
@@ -42,7 +43,7 @@ function Signup() {
         const uploadData = new FormData();
         uploadData.append("imageUrl", imageToUpload);
 
-        axios.post("api/auth/imageUpload", uploadData)
+        axios.post(`${API_URL}/api/auth/imageUpload`, uploadData)
         .then(response => {
             const imageUrl = response.data.imageUrl;
 
@@ -52,9 +53,11 @@ function Signup() {
             const following = [];
             const likes = [];
 
+            console.log("NAME FOR URL: ", nameForUrl)
+
             // Create user
             const requestBody = { email, password, name, nameForUrl, location, description, imageUrl, tracks, followers, following, likes }
-            axios.post("/api/auth/signup", requestBody)
+            axios.post(`${API_URL}/api/auth/signup`, requestBody)
             .then(() => {
                 navigate("/login");
             })

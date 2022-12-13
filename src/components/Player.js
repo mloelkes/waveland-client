@@ -9,6 +9,8 @@ function Player (props) {
     const speakerIcon = "/images/icons/baseline_volume_up_white_24dp.png";
     const speakerMuteIcon = "/images/icons/baseline_volume_mute_white_48dp.png";
 
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const isInitialMount = useRef(true);
     let audioReference = useRef(0);
 
@@ -60,7 +62,7 @@ function Player (props) {
     }
 
     function handleRandomButtonClick() {
-        axios.get("/api/users/all", { headers: { Authorization: `Bearer ${storedToken}` } })
+        axios.get(`${API_URL}/api/users/all`, { headers: { Authorization: `Bearer ${storedToken}` } })
         .then(response => {
             const users = response.data;
             const random = Math.floor(Math.random() * users.length);

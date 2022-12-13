@@ -4,18 +4,20 @@ import axios from "axios";
 const UserDetailsContext = React.createContext();
 
 function UserDetailsContextProvider(props) {
-    const [userDetails, setUserDetails] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+
+	const API_URL = process.env.REACT_APP_API_URL;
 
 	function getUserDetails () {
 		const storedToken = getStoredToken();
 
 		if (storedToken) {
-			return axios.get("/api/auth/verify", { headers: { Authorization: `Bearer ${storedToken}` } })
+			return axios.get(`${API_URL}/api/auth/verify`, { headers: { Authorization: `Bearer ${storedToken}` } })
 			.then(response => {
 				const user = response.data;
 
-                axios.get(`api/users/${user._id}`, { headers: { Authorization: `Bearer ${storedToken}` } })
+                axios.get(`${API_URL}/api/users/${user._id}`, { headers: { Authorization: `Bearer ${storedToken}` } })
                 .then(response => {
                     setUserDetails(response.data);
                     setIsLoading(false);

@@ -1,6 +1,8 @@
 import axios from "axios";
 
 function Likes(props) {
+    const API_URL = process.env.REACT_APP_API_URL;
+
     function handlePlayTrack(e) {
         const trackUrl = e.target.parentNode.attributes.trackurl.value;
         const trackImage = e.target.parentNode.attributes.trackimage.value;
@@ -9,7 +11,7 @@ function Likes(props) {
 
         const storedToken = localStorage.getItem('authToken');
         
-        axios.get(`api/users/${userId}`, { headers: { Authorization: `Bearer ${storedToken}` } })
+        axios.get(`${API_URL}/api/users/${userId}`, { headers: { Authorization: `Bearer ${storedToken}` } })
         .then(response => {
             const artistName = response.data.name;
             props.handlePlayTrack(trackUrl, trackImage, trackName, artistName);

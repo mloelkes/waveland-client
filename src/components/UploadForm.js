@@ -6,6 +6,8 @@ import axios from "axios";
 function UploadForm() {
     const { userDetails, getUserDetails } = useContext(UserDetailsContext);
 
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const [name, setName] = useState("");
     const [tag, setTag] = useState("");
     const [description, setDescription] = useState("");
@@ -29,7 +31,7 @@ function UploadForm() {
         const uploadTrackData = new FormData();
         uploadTrackData.append("trackUrl", trackToUpload);
 
-        axios.post("api/trackUpload", uploadTrackData, { headers: { Authorization: `Bearer ${storedToken}` } })
+        axios.post(`${API_URL}/api/trackUpload`, uploadTrackData, { headers: { Authorization: `Bearer ${storedToken}` } })
         .then(response => {
             setTrackUrl(response.data.trackUrl);
             setUploadTrackLabel("Wave uploaded");
@@ -48,21 +50,21 @@ function UploadForm() {
         uploadImageData.append("imageUrl", imageToUpload);
 
         // Upload track image
-        axios.post("api/imageUpload", uploadImageData, { headers: { Authorization: `Bearer ${storedToken}` } })
+        axios.post(`${API_URL}/api/imageUpload`, uploadImageData, { headers: { Authorization: `Bearer ${storedToken}` } })
         .then(response => {
             const user = userDetails._id;
             const imageUrl = response.data.imageUrl;
 
             // Create track
             const requestBody = { name, tag, description, imageUrl, trackUrl, user }
-            axios.post("/api/tracks", requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
+            axios.post(`${API_URL}/api/tracks`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
             .then((response) => {
                 let tracks = userDetails.tracks.slice();
                 tracks.push(response.data.track._id);
                 const requestBody = { tracks };
                 
                 // Update user tracks
-                axios.patch(`api/users/${userDetails._id}/tracks`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
+                axios.patch(`${API_URL}/api/users/${userDetails._id}/tracks`, requestBody, { headers: { Authorization: `Bearer ${storedToken}` } })
                 .then(() => {
                     getUserDetails();
                     navigate("/dashboard");

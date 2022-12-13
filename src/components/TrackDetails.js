@@ -8,6 +8,8 @@ function TrackDetails(props) {
     const { user } = useContext(AuthContext);
     const { userDetails, getUserDetails } = useContext(UserDetailsContext);
 
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const heartFilledUrl = "/images/icons/baseline_favorite_black_48dp.png";
     const heartOutlinedUrl = "/images/icons/baseline_favorite_border_black_48dp.png";
 
@@ -46,12 +48,12 @@ function TrackDetails(props) {
     }
 
     function addLike() {
-        callAxiosPatchForLike(`api/users/${user._id}/likes`);
+        callAxiosPatchForLike(`${API_URL}/api/users/${user._id}/likes`);
         setTrackLiked(true);
     }
 
     function removeLike() {
-        callAxiosPatchForLike(`api/users/${user._id}/likes/remove`);
+        callAxiosPatchForLike(`${API_URL}/api/users/${user._id}/likes/remove`);
         setTrackLiked(false);
     }
 

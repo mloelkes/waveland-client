@@ -3,6 +3,8 @@ import axios from "axios";
 
 const AuthContext = React.createContext();
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function AuthProviderWrapper(props) {
 	const [user, setUser] = useState(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,7 +19,7 @@ function AuthProviderWrapper(props) {
 		// check local storage if there is a token
 		const storedToken = localStorage.getItem("authToken")
 		if (storedToken) {
-			return axios.get("/api/auth/verify", { headers: { Authorization: `Bearer ${storedToken}` } })
+			return axios.get(`${API_URL}/api/auth/verify`, { headers: { Authorization: `Bearer ${storedToken}` } })
 				.then(response => {
 					const user = response.data
 					setUser(user)

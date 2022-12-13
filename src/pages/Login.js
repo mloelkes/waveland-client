@@ -9,6 +9,8 @@ function Login() {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(undefined);
 
+    const API_URL = process.env.REACT_APP_API_URL;
+
     const navigate = useNavigate();
 
     const { storeToken, verifyStoredToken } = useContext(AuthContext);
@@ -26,7 +28,7 @@ function Login() {
         e.preventDefault();
         const requestBody = { email, password }
 
-        axios.post("/api/auth/login", requestBody)
+        axios.post(`${API_URL}/api/auth/login`, requestBody)
         .then(response => {
             const token = response.data.authToken;
             storeToken(token);
