@@ -18,11 +18,15 @@ function TrackDetails(props) {
     const [trackLiked, setTrackLiked] = useState(false);
     const [errorMessage, setErrorMessage] = useState(undefined);
 
-    function handleTrackDetailsClick(e) {
+    async function handleTrackDetailsClick(e) {
+        console.log(e.target.parentNode.attributes)
         const trackUrl = e.target.parentNode.attributes.trackurl.value;
         const trackImage = e.target.parentNode.attributes.trackimage.value;
         const trackName = e.target.parentNode.attributes.trackname.value;
-        const artistName = e.target.parentNode.attributes.artistname.value;
+
+        const artistID = e.target.parentNode.attributes.artistid.value;
+        const response = await axios.get(`${API_URL}/api/users/${artistID}`, { headers: { Authorization: `Bearer ${storedToken}` } });
+        const artistName = response.data.name;
 
         props.handlePlayTrack(trackUrl, trackImage, trackName, artistName);
     }
@@ -75,7 +79,7 @@ function TrackDetails(props) {
         <div className="TrackDetails">
             <div className="col-1">
                 <div className="col-1">
-                    <button trackurl={props.track?.trackUrl} trackimage={props.track?.imageUrl} trackname={props.track?.name} artistname={props.track?.user?.name} onClick={handleTrackDetailsClick}>
+                    <button trackurl={props.track?.trackUrl} trackimage={props.track?.imageUrl} trackname={props.track?.name} artistid={props.track?.user} onClick={handleTrackDetailsClick}>
                         <img id="track-cover" src={props.track?.imageUrl} alt="track cover"/>
                     </button>
                 </div>
